@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мінігра</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: green;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        
+        .game-container {
+            text-align: center;
+        }
+
+        .record {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            color: white;
+        }
+
+        .spray-image {
+            width: 200px;
+            height: auto;
+            cursor: pointer; /* Для того, щоб показати, що на зображення можна натискати */
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="record">Рекорд: 0</div>
+        <img src="img/spray_cartoon_starr.png" alt="Spray Image" class="spray-image" onclick="handleClick()">
+    </div>
+    <script>
+        let record = 0;
+
+        // Функція для оновлення рекорду
+        function updateRecord(newRecord) {
+            record = newRecord;
+            document.querySelector('.record').textContent = `Рекорд: ${record}`;
+        }
+
+        // Функція обробки кліку по зображенню
+        function handleClick() {
+            record += 1; // Збільшуємо рекорд на 1 за кожен клік
+            updateRecord(record); // Оновлюємо рекорд на екрані
+        }
+    </script>
+</body>
+</html>
