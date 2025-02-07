@@ -33,7 +33,24 @@
         .spray-image {
             width: 200px;
             height: auto;
-            cursor: pointer; /* Для того, щоб показати, що на зображення можна натискати */
+            cursor: pointer;
+        }
+
+        /* Стиль для сірої таблички, яка займає весь екран */
+        .inactive-message {
+            display: none;
+            background-color: grey;
+            color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            text-align: center;
         }
     </style>
 </head>
@@ -42,20 +59,44 @@
         <div class="record">Рекорд: 0</div>
         <img src="img/spray_cartoon_starr.png" alt="Spray Image" class="spray-image" onclick="handleClick()">
     </div>
-    <script>
-        let record = 0;
 
-        // Функція для оновлення рекорду
+    <!-- Сіра табличка з повідомленням для неактивного сервера -->
+    <div id="inactive-message" class="inactive-message">
+        Наразі сервери вимкнені. Спробуйте пізніше.
+    </div>
+
+    <script>
+        // Вбудований JSON об'єкт для зберігання статусу гри та рекорду
+        const gameData = {
+            "record": 0, // Початковий рекорд
+            "game_status": "inactive" // Може бути "active" або "inactive"
+        };
+
+        // Оновлення рекорду
         function updateRecord(newRecord) {
-            record = newRecord;
-            document.querySelector('.record').textContent = `Рекорд: ${record}`;
+            gameData.record = newRecord;
+            document.querySelector('.record').textContent = `Рекорд: ${gameData.record}`;
         }
 
         // Функція обробки кліку по зображенню
         function handleClick() {
-            record += 1; // Збільшуємо рекорд на 1 за кожен клік
-            updateRecord(record); // Оновлюємо рекорд на екрані
+            gameData.record += 1; // Збільшуємо рекорд на 1 за кожен клік
+            updateRecord(gameData.record); // Оновлюємо рекорд на екрані
         }
+
+        // Функція перевірки статусу гри
+        function checkGameStatus() {
+            if (gameData.game_status === "inactive") {
+                // Показуємо повідомлення про неактивний статус
+                document.getElementById('inactive-message').style.display = 'flex';
+            } else {
+                // Приховуємо повідомлення, якщо статус активний
+                document.getElementById('inactive-message').style.display = 'none';
+            }
+        }
+
+        // Перевіряємо статус гри при завантаженні
+        window.onload = checkGameStatus;
     </script>
 </body>
 </html>
