@@ -86,7 +86,7 @@
 
         // Функція перевірки статусу гри
         function checkGameStatus() {
-            if (gameData.game_status === "active") {
+            if (gameData.game_status === "inactive") {
                 // Показуємо повідомлення про неактивний статус
                 document.getElementById('inactive-message').style.display = 'flex';
             } else {
