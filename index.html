@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мінігра</title>
+    <title>spray clicker</title>
     <style>
         body {
             margin: 0;
@@ -15,6 +15,7 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
+            position: relative;
         }
         
         .game-container {
@@ -36,7 +37,6 @@
             cursor: pointer;
         }
 
-        /* Стиль для сірої таблички, яка займає весь екран */
         .inactive-message {
             display: none;
             background-color: grey;
@@ -51,6 +51,41 @@
             align-items: center;
             font-size: 24px;
             text-align: center;
+            z-index: 10;
+        }
+
+        .bottom-left-image {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 100px;
+            height: auto;
+            z-index: 5;
+        }
+
+        .box-scene {
+            display: none;
+            background-color: lightblue;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 15;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box-scene img {
+            width: 300px;
+            height: auto;
+            opacity: 1;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .hidden {
+            opacity: 0;
         }
     </style>
 </head>
@@ -60,43 +95,79 @@
         <img src="img/spray_cartoon_starr.png" alt="Spray Image" class="spray-image" onclick="handleClick()">
     </div>
 
-    <!-- Сіра табличка з повідомленням для неактивного сервера -->
     <div id="inactive-message" class="inactive-message">
         Технічна перерва приблизний час очікування 2 години.
     </div>
 
+    <img id="bottom-left-img" src="img/image112.png" alt="Image" class="bottom-left-image" onclick="showBoxScene()">
+
+    <div id="box-scene" class="box-scene" onclick="goBackToMenu()">
+        <img id="box-img" src="img/image112.png" alt="Box Scene" onclick="changeImage(event)">
+    </div>
+
     <script>
-        // Вбудований JSON об'єкт для зберігання статусу гри та рекорду
-        const gameData = {
-            "record": 0, // Початковий рекорд
-            "game_status": "inactive" // Може бути "active" або "inactive"
+        let gameData = {
+            record: 0,
+            game_status: "active"
         };
 
-        // Оновлення рекорду
+        function fetchGameStatus() {
+            fetch('game_status.json')
+                .then(response => response.json())
+                .then(data => {
+                    gameData = data;
+                    gameData.record = parseInt(gameData.record) || 0;
+                    updateRecord(gameData.record);
+                    checkGameStatus();
+                })
+                .catch(error => console.error('Помилка завантаження JSON:', error));
+        }
+
         function updateRecord(newRecord) {
             gameData.record = newRecord;
             document.querySelector('.record').textContent = `Рекорд: ${gameData.record}`;
         }
 
-        // Функція обробки кліку по зображенню
         function handleClick() {
-            gameData.record += 1; // Збільшуємо рекорд на 1 за кожен клік
-            updateRecord(gameData.record); // Оновлюємо рекорд на екрані
+            let currentRecord = parseInt(gameData.record) || 0;
+            gameData.record = currentRecord + 1;
+            updateRecord(gameData.record);
         }
 
-        // Функція перевірки статусу гри
         function checkGameStatus() {
-            if (gameData.game_status === "inactive") {
-                // Показуємо повідомлення про неактивний статус
-                document.getElementById('inactive-message').style.display = 'flex';
-            } else {
-                // Приховуємо повідомлення, якщо статус активний
+            if (gameData.game_status === "active") {
                 document.getElementById('inactive-message').style.display = 'none';
+                document.getElementById('bottom-left-img').style.display = 'block';
+            } else {
+                document.getElementById('inactive-message').style.display = 'flex';
+                document.getElementById('bottom-left-img').style.display = 'none';
             }
         }
 
-        // Перевіряємо статус гри при завантаженні
-        window.onload = checkGameStatus;
+        function showBoxScene() {
+            document.getElementById('box-scene').style.display = 'flex';
+            document.getElementById('box-img').src = "img/image112.png";
+        }
+
+        function changeImage(event) {
+            event.stopPropagation();
+            let boxImg = document.getElementById('box-img');
+            boxImg.classList.add('hidden');
+
+            setTimeout(() => {
+                boxImg.src = "img/image709.png";
+                boxImg.classList.remove('hidden');
+            }, 800);
+        }
+
+        function goBackToMenu() {
+            document.getElementById('box-scene').style.display = 'none';
+        }
+
+        window.onload = function() {
+            fetchGameStatus();
+            document.getElementById('box-scene').style.display = 'none';
+        };
     </script>
 </body>
 </html>
