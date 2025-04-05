@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>spray clicker</title>
+    <title>brawl champion</title>
     <style>
         body {
             margin: 0;
@@ -32,7 +32,7 @@
         }
 
         .spray-image {
-            width: 200px;
+            width: 120px;
             height: auto;
             cursor: pointer;
         }
@@ -92,7 +92,7 @@
 <body>
     <div class="game-container">
         <div class="record">Рекорд: 0</div>
-        <img src="img/spray_cartoon_starr.png" alt="Spray Image" class="spray-image" onclick="handleClick()">
+        <img src="img/profile_icon_shelly_classic.png" alt="Spray Image" class="spray-image" onclick="handleClick()">
     </div>
 
     <div id="inactive-message" class="inactive-message">
@@ -102,7 +102,7 @@
     <img id="bottom-left-img" src="img/image112.png" alt="Image" class="bottom-left-image" onclick="showBoxScene()">
 
     <div id="box-scene" class="box-scene" onclick="goBackToMenu()">
-        <img id="box-img" src="img/image112.png" alt="Box Scene" onclick="changeImage(event)">
+        <img id="box-img" src="img/icon_profile_18_2.png" alt="Box Scene" onclick="changeImage(event)">
     </div>
 
     <script>
@@ -155,7 +155,7 @@
             boxImg.classList.add('hidden');
 
             setTimeout(() => {
-                boxImg.src = "img/image709.png";
+                boxImg.src = "img/icon_profile_18_2.png";
                 boxImg.classList.remove('hidden');
             }, 800);
         }
